@@ -32,6 +32,10 @@ const articleSchema = monoogse.Schema({
   comments:[{
     type:monoogse.SchemaTypes.ObjectId,
     ref:'Comment'
+  }],
+  praise:[{
+    type:monoogse.SchemaTypes.ObjectId,
+    ref:'User'
   }]
 })
 const Article = monoogse.model('Article',articleSchema)

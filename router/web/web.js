@@ -50,6 +50,22 @@ module.exports = app =>{
     res.send(model)
   })
 
+  //点赞接口
+  router.post('/praise',async (req,res)=>{
+    console.log(req.body)
+    const {articleId,userId,type} = req.body
+    if(type === 1){
+      // 点赞
+      await Article.update({_id:articleId},{$addToSet:{praise:userId}},{new:true})
+      res.status(200).send('点赞成功')
+    }else if(type === -1){
+      // 取消点赞
+      // 删除内嵌数组指定数据 使用操作符 $pull
+      const model = await Article.update({_id:articleId},{$pull:{'praise':userId}})
+      console.log(model)
+      res.status(200).send('取消点赞')
+    }
+  })
 
   // 获取管理员信息
   const AdminUser = require('../../models/AdminUser')
@@ -96,7 +112,6 @@ module.exports = app =>{
 
   //获取某些分类中的文章
    router.get('/category/:articles',async (req,res)=>{
-     console.log(req.params.articles)
      let pageSize = parseInt(req.query.size) || 5;
      let currentPage = parseInt(req.query.page) || 1;
      const articles = await Article.find({categories:req.params.articles}).limit(pageSize).skip((currentPage - 1)*pageSize).populate('categories authorinfo')
