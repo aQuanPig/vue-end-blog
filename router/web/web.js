@@ -34,13 +34,17 @@ module.exports = app =>{
 
   //获取某篇文章的信息
   router.get('/articles/detail/:id',async (req,res)=>{
-    const model = await Article.findById(req.params.id).sort({'_id':-1}).populate('authorinfo categories').populate({
-      path:'comments',
-      options:{sort:{'_id':-1}},
-      populate:{
-        path:'user'
-      }
-    })
+    const model = await Article.findById(req.params.id)
+      .sort({'_id':-1})
+      .populate('authorinfo categories ')
+      .populate({
+        path:'comments',
+        options:{sort:{'_id':-1}},
+        populate:{
+          path:'answer user',
+          populate:("user")
+        }
+      })
     res.send(model)
   })
 
@@ -99,14 +103,14 @@ module.exports = app =>{
   require('../signIn/index')(app,'web',User)
 
   //添加评论处理
+  const Comment = require('../../models/Comment')
   router.post('/comments',async(req,res)=>{
-    const Comment = require('../../models/Comment')
     const {content,articles,user} = req.body
     const comment = await Comment.create({content,user,articles})
     res.send(comment)
-    // $addToSet：向数组中添加元素，若数组本身含有该元素，则不添加，否则，添加，这样就避免了数组中的元素重复现象；
-    // $push：向数组尾部添加元素，但它不管数组中有没有该元素，都会添加。
-    await Article.findOneAndUpdate({_id:comment.articles},{$addToSet:{comments:comment._id}},{new:true})
+    console.log(comment)
+    const result = await Article.findOneAndUpdate({_id:comment.articles},{$addToSet:{comments:comment._id}},{new:true})
+    console.log(result)
   })
 
 
@@ -138,6 +142,18 @@ module.exports = app =>{
     const message = await Message.find().countDocuments()
     res.send(message)
   })
+
+  //评论文章
+  const Answer = require('../../models/Answer')
+  router.post('/answer',async (req,res)=>{
+    const {user,comment,content} = req.body;
+    console.log(user,comment,content)
+    const model = await Answer.create({user,comment,content})
+    res.send(model)
+    await Comment.findOneAndUpdate({_id:model.comment},{$addToSet:{answer:model._id}},{new:true})
+
+  })
+
   // 错误处理
   app.use((err,req,res,next)=>{
     res.status(err.statusCode || 500).send({message:err.message})

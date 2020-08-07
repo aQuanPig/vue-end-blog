@@ -12,6 +12,10 @@ const commentSchema = mongoose.Schema({
     type:mongoose.SchemaTypes.ObjectId,
     ref:'Article'
   },
+  answer:[{
+    type:mongoose.SchemaTypes.ObjectId,
+    ref:'Answer'
+  }],
   date:{type:Date,default:new Date()}
 })
 const Comment = mongoose.model('Comment',commentSchema)
