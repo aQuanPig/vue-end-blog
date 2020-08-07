@@ -11,7 +11,7 @@ app.use(express.json())
 app.use('/uploads',express.static(path.join(__dirname,'/uploads')))
 app.use('/webuploads',express.static(path.join(__dirname,'/webuploads')))
 app.use('/admin',express.static(path.join(__dirname,'/admin')))
-app.use('/',express.static(path.join(__dirname,'/web')))
+app.use('/web',express.static(path.join(__dirname,'/web')))
 //后台管理系统接口
 require('./router/admin/admin')(app)
 // 前台展示接口
