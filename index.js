@@ -10,7 +10,8 @@ app.use(express.json())
 //处理静态资源的访问，表示/uploads下面的文件都是静态文件
 app.use('/uploads',express.static(path.join(__dirname,'/uploads')))
 app.use('/webuploads',express.static(path.join(__dirname,'/webuploads')))
-
+app.use('/admin',express.static(path.join(__dirname,'/admin')))
+app.use('/',express.static(path.join(__dirname,'/web')))
 //后台管理系统接口
 require('./router/admin/admin')(app)
 // 前台展示接口
