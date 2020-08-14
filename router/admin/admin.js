@@ -66,11 +66,12 @@ module.exports = app =>{
   const path = require('path')
   const uploadPath = path.join(__dirname,"../../uploads")
   require('../fileResource/index')(app,uploadPath,'admin')
+
+  
   //获取验证码
   // router.get('/admin/api/captcha',captchaMiddleware())
   const svgCaptcha = require('svg-captcha');
   app.get('/admin/api/captcha',(req, res, next) => {
-    console.log('ok')
     const captcha = svgCaptcha.create({
       inverse: false, // 翻转颜色
       fontSize: 48, // 字体大小

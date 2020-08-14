@@ -1,13 +1,24 @@
 //处理文件资源
 const multer = require('multer')
-module.exports = (app,path,person) =>{
-  const upload = multer({dest:path})
-  return app.post(`/${person}/api/uploads`,upload.single('file'),(req,res,next)=>{
+// const MAO = require('multer-aliyun-oss');
+module.exports = (app, path, person) => {
+  const upload = multer({
+    dest:path
+    // storage: MAO({
+    //   config: {
+    //     region: '<region>',
+    //     accessKeyId: '<accessKeyId>',
+    //     accessKeySecret: '<accessKeySecret>',
+    //     bucket: '<bucket>'
+    //   }
+    // })
+  })
+  return app.post(`/${person}/api/uploads`, upload.single('file'), (req, res, next) => {
     // req.file 是 `file` 文件的信息
     const file = req.file
-    let fileName =''
-    if (person === 'web'){
-      fileName  = 'webuploads'
+    let fileName = ''
+    if (person === 'web') {
+      fileName = 'webuploads'
     } else {
       fileName = 'uploads'
     }
