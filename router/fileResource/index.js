@@ -16,12 +16,6 @@ module.exports = (app, path, person) => {
   return app.post(`/${person}/api/uploads`, upload.single('file'), (req, res, next) => {
     // req.file 是 `file` 文件的信息
     const file = req.file
-    let fileName = ''
-    if (person === 'web') {
-      fileName = 'webuploads'
-    } else {
-      fileName = 'uploads'
-    }
     // 修改URL，改成线上的
     // file.url = `http://localhost:3000/${fileName}/${file.filename}`
     // file.url = `http://47.107.149.243/${fileName}/${file.filename}`
