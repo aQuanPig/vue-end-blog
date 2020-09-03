@@ -6,9 +6,9 @@ module.exports = (app, path, person) => {
     // dest:path
     storage: MAO({
       config: {
-        region: 'oss-cn-shenzhen',
-        accessKeyId: 'LTAI4G8XiQwhDckLpyM9yx9Y',
-        accessKeySecret: 't6br32uJcwe1PUSx3KOCi6BxZ8guV5',
+        region: '',
+        accessKeyId: '',
+        accessKeySecret: '',
         bucket: 'zz-vue-blog'
       }
     })
